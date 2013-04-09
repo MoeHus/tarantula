@@ -18,9 +18,11 @@ class Sentence < ActiveRecord::Base
   def self.strip(str)
     if str =~ /^([^:]+:).+$/
       return $1
+    elsif str =~ /"[^"]*"/
+      str.gsub(/"[^"]*"/,'""').chomp
+    elsif str =~ /\[[^\[]*\]/
+      str.gsub(/\[[^\[]*\]/,'""').chomp
     end
-    str.gsub(/"[^"]*"/,'""').chomp
-    str.gsub(/\[[^\[]*\]/,'""').chomp
   end
 
   def self.keywords 

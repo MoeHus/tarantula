@@ -569,7 +569,7 @@ class Case < ActiveRecord::Base
     unless Step.sentences.empty?
       self.preconditions_and_assumptions.split("\n").each{|s|
         unless (Step.sentences.include? Sentence.strip(s) or Sentence.allowed? s)
-          errors.add(:sentence, "\"#{s}\" - Unknown")
+          errors.add(:sentence, "\"#{s}\" - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
           return false
         end
       }

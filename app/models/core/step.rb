@@ -78,12 +78,12 @@ class Step < ActiveRecord::Base
     unless Step.sentences.empty?
       self.action.split("\n").each{|s|
         unless (Step.sentences.include? Sentence.strip(s) or Sentence.allowed? s)
-          raise "Validation failed: Sentence \"#{s}\" - Unknown"
+          raise "Validation failed: Sentence \"#{s}\" - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}"
         end
       }
       self.result.split("\n").each{|s|
         unless (Step.sentences.include? Sentence.strip(s) or Sentence.allowed? s)
-          raise "Validation failed: Sentence \"#{s}\" - Unknown"
+          raise "Validation failed: Sentence \"#{s}\" - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}"
         end
       }
       end
