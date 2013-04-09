@@ -20,6 +20,7 @@ class Sentence < ActiveRecord::Base
       return $1
     end
     str.gsub(/"[^"]*"/,'""').chomp
+    str.gsub(/\[[^\[]*\]/,'""').chomp
   end
 
   def self.keywords 
