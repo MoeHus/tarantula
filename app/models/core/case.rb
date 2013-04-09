@@ -43,9 +43,9 @@ class Case < ActiveRecord::Base
 
   validates_presence_of :title, :project_id, :date
   validates_uniqueness_of :external_id, :scope => :project_id, :allow_nil => true
-  validate :sentence, :on => :save
+  validate :sentence
 
-  after_create :copy_attachments_from_original
+  validate :copy_attachments_from_original
 
   def copy_attachments_from_original
     if self.original_id
@@ -566,26 +566,13 @@ class Case < ActiveRecord::Base
 
   def sentence  
     sents = self.project.sentences.collect(&:value)
+    Step.sentences = sents
     unless self.project.sentences.empty?
       self.preconditions_and_assumptions.split("\n").each{|s|
-        unless sents.include? Sentence.strip(s)
+        unless sents.include? Sentence.strip(s) or s =~ /^\s*#/
           errors.add(:sentence, "\"#{Sentence.strip(s)}\" - Unknown")
           return false
         end
-      }
-      self.steps.each{|step|
-        step.action.split("\n").each{|s|
-          unless sents.include? Sentence.strip(s)
-            errors.add(:sentence, "\"#{Sentence.strip(s)}\" - Unknown")
-            return false
-          end
-        }
-        step.result.split("\n").each{|s|
-          unless sents.include? Sentence.strip(s)
-            errors.add(:sentence, "\"#{Sentence.strip(s)}\" - Unknown")
-            return false
-          end
-        }
       }
     end
     true

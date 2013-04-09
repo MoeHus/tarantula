@@ -15,7 +15,16 @@ class Step < ActiveRecord::Base
   
   validates_presence_of :action
   validates_presence_of :result
+  @@sentences = []
+  validate :sentence
   
+  def self.sentences= ary
+    @@sentences=ary
+  end
+
+  def self.sentences
+    @@sentences
+  end
   # execution history, excluding step execution exclude_se
   def history(exclude_se = nil)
     return [] unless executions
@@ -63,4 +72,19 @@ class Step < ActiveRecord::Base
     attribute :result, 'Result'
   end
 
+  private
+
+  def sentence
+    self.action.split("\n").each{|s|
+      unless Step.sentences.include? Sentence.strip(s) or s =~ /^\s*#/
+        raise "Validation failed: Sentence \"#{Sentence.strip(s)}\" - Unknown"
+      end
+    }
+    self.result.split("\n").each{|s|
+      unless Step.sentences.include? Sentence.strip(s) or s =~ /^\s*#/
+        raise "Validation failed: Sentence \"#{Sentence.strip(s)}\" - Unknown"
+      end
+    }
+    true
+  end
 end

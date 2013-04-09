@@ -33,7 +33,7 @@ class Sentence < ActiveRecord::Base
     s.gsub("[",'"<').gsub("]",'>"').chomp
     out = s
     first_word = s.scan(/\s*[^\s]+/).first.gsub(":","")
-    out = "* #{s}" unless Sentence.keywords.values.include? first_word
+    out = "* #{s}" unless Sentence.keywords.values.include?(first_word) or s =~ /^\s*#/
     out
   end
 

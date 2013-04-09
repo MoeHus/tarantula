@@ -32,9 +32,9 @@ class ExportController < ApplicationController
         s.add_field :test_objective, :objective
         s.add_field :test_preconditions, :preconditions_and_assumptions
         s.add_field :test_data, :test_data
-
         s.add_table("STEPS", :steps, :header => true) do |t|
-          t.add_column(:step_index){ |item| StepExecution.find_by_step_id(item.id).position.to_s }
+          i = 0
+          t.add_column(:step_index){ |item| (i += 1).to_s }
           t.add_column :step_action, :action
           t.add_column :step_result, :result
         end
