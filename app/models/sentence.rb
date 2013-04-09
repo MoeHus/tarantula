@@ -29,6 +29,11 @@ class Sentence < ActiveRecord::Base
     keywords
   end
 
+  def self.allowed?(s)
+    return true if s =~ /^\s*[#|].+/
+    false
+  end
+
   def self.prepare s
     s.gsub("[",'"<').gsub("]",'>"').chomp
     out = s
