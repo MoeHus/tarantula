@@ -568,8 +568,8 @@ class Case < ActiveRecord::Base
     Step.sentences = self.project.sentences.collect(&:value)
     unless Step.sentences.empty?
       self.preconditions_and_assumptions.split("\n").each{|s|
-        unless (Step.sentences.include? Sentence.strip(s) or Sentence.allowed? s)
-          errors.add(:sentence, "\"#{s}\" - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
+        unless (Sentence.allowed? s or Step.sentences.include? Sentence.strip(s))
+          errors.add(:sentence, "\'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
           return false
         end
       }
