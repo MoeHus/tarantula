@@ -16,8 +16,8 @@ class Sentence < ActiveRecord::Base
   end
 
   def self.strip(str)
-    if str =~ /^([^:]+:).*$/
-      return $1
+    if str =~ /^([^:]+):.*$/ and Sentence.keywords.include? $1
+      return "#{$1}:"
     elsif str =~ /"[^"]*"/
       str.gsub(/"[^"]*"/,'""').chomp
     elsif str =~ /\[[^\[]*\]/
