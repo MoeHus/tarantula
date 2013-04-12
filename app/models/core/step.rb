@@ -16,7 +16,7 @@ class Step < ActiveRecord::Base
   validates_presence_of :action
   validates_presence_of :result
   @@sentences = []
-  validate :sentence
+  #validate :sentence
   
   def self.sentences= ary
     @@sentences=ary

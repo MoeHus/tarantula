@@ -616,6 +616,17 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                     }
                 })
             );
+            this.itemContext.add(
+                new Ext.menu.Item({
+                    // TODO: Change text between Delete/Undelete depending on
+                    // current folder.
+                    text:'Export',
+                    scope: this,
+                    handler: function(c,e) {
+                        this.exportItems(this.taggableType);
+                    }
+                })
+            );
             this.itemContext.add(new Ext.menu.Separator());
         }
 
@@ -642,17 +653,6 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
             })
         );
 
-        this.itemContext.add(
-            new Ext.menu.Item({
-                // TODO: Change text between Delete/Undelete depending on
-                // current folder.
-                text:'Export',
-                scope: this,
-                handler: function(c,e) {
-                    this.exportItems();
-                }
-            })
-        );
 
         if (this.archiveUrl) {
             this.itemContext.add(
@@ -695,6 +695,15 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                     }
                 })
             );
+            this.tagContext.add(
+                new Ext.menu.Item({
+                    text:'Export',
+                    scope: this,
+                    handler: function(c,e) {
+                        this.exportItems('Tag');
+                    }
+                })
+            );
             this.tagContext.add(new Ext.menu.Separator());
             this.tagContext.add(
                 new Ext.menu.Item({
@@ -719,6 +728,7 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                     }
                 })
             );
+
         }
     }
 
@@ -779,12 +789,12 @@ Ext.extend(Ext.ux.ListPanel, Ext.ContentPanel, {
             }
         });
     },
-    exportItems: function() {
+    exportItems: function(type) {
         var ids = this.selectedItems.map(function(i) {return i.dbid;}).join(',');
         Ext.Ajax.request({
             url: "/export/items",
             method: 'get',
-            params: {ids: ids, type: this.taggableType},
+            params: {ids: ids, type: type},
             scope: this,
             success: function(response, request){
               path = Ext.decode(response.responseText).data.path;

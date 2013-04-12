@@ -9,15 +9,19 @@ class ExportController < ApplicationController
     name = 'exported document'
     case item_type
     when 'Case'
+      filename = 'cases.odt'
       c = Case.find id
       export_cases [c]
-      filename = 'cases.odt'
     when 'Execution'
+      filename = 'results.odt'
       e = Execution.find id
       cases = Case.find(e.case_executions.collect(&:case_id))
       export_cases_with_results e
-      filename = 'results.odt'
     when 'Tag'
+      filename = 'cases.odt'
+      tag = Tag.find id
+      cases = Case.find_with_tags([tag], { :project => @project })
+      export_cases cases
     end
     @report.generate(@report_path)
     render :json => {:data => {:path => "reports/#{filename}"}}
@@ -28,7 +32,7 @@ class ExportController < ApplicationController
   def export_cases cases
     @report = ODFReport::Report.new("#{@template_path}/cases.odt") do |r|
       r.add_section("CASES", cases) do |s|
-        s.add_field(:test_title){|item| item.title}
+        s.add_field(:test_title){|item| item.title.to_s }
         s.add_field :test_objective, :objective
         s.add_field :test_preconditions, :preconditions_and_assumptions
         s.add_field :test_data, :test_data
@@ -45,7 +49,7 @@ class ExportController < ApplicationController
   def export_cases_with_results execution
     @report = ODFReport::Report.new("#{@template_path}/results.odt") do |r|
       r.add_section("CASES", execution.case_executions) do |s|
-        s.add_field(:test_title){|item| item.test_case.title}
+        s.add_field(:test_title){|item| item.test_case.title.to_s}
         s.add_field(:test_objective){|item| item.test_case.objective}
         s.add_field(:test_preconditions){|item| item.test_case.preconditions_and_assumptions}
         s.add_field(:test_data){|item| item.test_case.test_data}

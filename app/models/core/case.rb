@@ -43,7 +43,7 @@ class Case < ActiveRecord::Base
 
   validates_presence_of :title, :project_id, :date
   validates_uniqueness_of :external_id, :scope => :project_id, :allow_nil => true
-  validate :sentence
+  #validate :sentence
 
   validate :copy_attachments_from_original
 
