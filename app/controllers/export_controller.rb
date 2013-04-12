@@ -22,6 +22,11 @@ class ExportController < ApplicationController
       tag = Tag.find id
       cases = Case.find_with_tags([tag], { :project => @project })
       export_cases cases
+    when 'TestSet'
+      filename = 'cases.odt'
+      ts = TestSet.find id
+      cases = ts.cases
+      export_cases cases
     end
     @report.generate(@report_path)
     render :json => {:data => {:path => "reports/#{filename}"}}
