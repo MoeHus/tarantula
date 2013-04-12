@@ -32,13 +32,12 @@ class ExportController < ApplicationController
   def export_cases cases
     @report = ODFReport::Report.new("#{@template_path}/cases.odt") do |r|
       r.add_section("CASES", cases) do |s|
-        s.add_field(:test_title){|item| item.title.to_s }
+        s.add_field(:test_title){|item| @i = 0; item.title.to_s }
         s.add_field :test_objective, :objective
         s.add_field :test_preconditions, :preconditions_and_assumptions
         s.add_field :test_data, :test_data
         s.add_table("STEPS", :steps, :header => true) do |t|
-          i = 0
-          t.add_column(:step_index){ |item| (i += 1).to_s }
+          t.add_column(:step_index){ |item| (@i += 1).to_s }
           t.add_column :step_action, :action
           t.add_column :step_result, :result
         end

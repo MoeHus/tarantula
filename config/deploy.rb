@@ -50,4 +50,4 @@ namespace :deploy do
   end
 end
 
-after 'deploy:update_code', 'deploy:symlink_db', 'deploy:symlink_reports_folder'
+after 'deploy:update_code', 'deploy:symlink_db', 'deploy:symlink_reports_folder', 'deploy:precompile'
