@@ -37,9 +37,17 @@ namespace :deploy do
 		run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
 	end
 
-	task :my, :roles => :app do
-	 run "echo 1"
+	task :symlink_reports_folder, :roles => :app do
+		run "ln -nfs #{deploy_to}/shared/reports/ #{release_path}/public/reports"
 	end
+
+	task :my, :roles => :app do
+    run "echo 1"
+	end
+
+  task :precompile, :role => :app do
+    run "cd #{release_path}/ && RAILS_ENV=production bundle exec rake assets:precompile --trace"
+  end
 end
 
-after 'deploy:update_code', 'deploy:symlink_db'
+after 'deploy:update_code', 'deploy:symlink_db', 'deploy:symlink_reports_folder'
