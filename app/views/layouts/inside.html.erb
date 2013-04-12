@@ -27,6 +27,18 @@ function open_flash_chart_data(id) {
     return ReportRequests.ofc_data(id);
 }
 
+function updateSentences(){
+    Ext.Ajax.request({
+        url: '/automation/get_sentences',
+        scope: this,
+        method: 'get',
+        callback: function(o,s,response) {
+          availableTags = Ext.decode(response.responseText).data;
+        }
+    });
+};
+
+
 // By default, right-clicking on Open Flash Chart and choosing "save
 // image locally" calls this function.
 function save_image(id) {
@@ -99,6 +111,8 @@ var user_group;
 var MainContent;
 
 var GUI;
+
+var availableTags;
 
 // Creates chain of functions where first one gets arguments and
 // other users the return values as an argument
@@ -385,6 +399,9 @@ Ext.testia.GUI = function() {
         expires: new Date(new Date().getTime()+(1000*60*60*24*60)) // 30 days
         //domain:
     });
+    // update Autocomplete sentences list for this project on first load
+    updateSentences();
+
     // Add events to be listened by other components.
     this.addEvents({
         /**
@@ -490,6 +507,9 @@ Ext.testia.GUI = function() {
         this.testobjects_list.reload();
 
         this.tagsStore.load();
+
+        // update Autocomplete sentences list for this project on projectchanged
+        updateSentences();
     }, this);
 
     this.on('testareachanged', function() {
@@ -690,7 +710,7 @@ Ext.testia.GUI = function() {
         id: 'dbid',
         fields: ['dbid', 'text', 'selected', 'forced']
     });
-
+    
     this.tagsStore.on('load', function(s, r) {
         var rec = Ext.data.Record.create([
             {name: 'text'},
@@ -1566,6 +1586,39 @@ var importCsv = function (){
 
 // Adding live jquery handlers for autocompletion
 
+    jQuery(function() {
+        function split( val ) {
+          return val.split( /\n/ );
+        }
+        function extractLast( term ) {
+          return split( term ).pop();
+        }
+        function complete(jElement){
+            jElement.bind( "keydown", function( event ) {
+            if ( event.keyCode === jQuery.ui.keyCode.TAB && jQuery( this ).data( "ui-autocomplete" ).menu.active ) {
+              event.preventDefault();
+            }}).autocomplete({
+            minLength: 3,
+            source: function( request, response ) { response( jQuery.ui.autocomplete.filter( availableTags, extractLast( request.term ) ) ); },
+            focus: function() { return false; },
+            select: function( event, ui ) { 
+                var terms = split( this.value ); 
+                terms.pop(); 
+                terms.push( ui.item.value );
+                //terms.push( "" );  // it's keep inserting new line after choosing autocomplete term
+                this.value = terms.join( "\n" );
+                return false;
+            }
+          });
+        }
+
+        jQuery(document).on("click", jQuery("textarea[name=preconditions_and_assumptions]"), function() {
+            complete(jQuery("textarea[name=preconditions_and_assumptions]"));
+        });
+        jQuery(document).on('keydown',jQuery(".x-shadow").next().find('textarea'),function(){            
+            complete(jQuery(".x-shadow").next().find('textarea'));
+        });
+ });
 
       //]]>
       </script>
@@ -1786,57 +1839,5 @@ var importCsv = function (){
             height: 100px;
         }
     </style>
-    <script type="text/javascript">        
-
-    var availableTags;
-    jQuery(document).ready(getTags());
-    function getTags(){	
-      jQuery.ajax({
-        url: '/automation/get_sentences',
-        type: 'GET',
-        dataType: 'json',            
-        success: function(data){
-    			jQuery.each(data,function(i,val){    				
-            availableTags = val;
-          });
-        }
-      })	
-    }
-
-    jQuery(function() {
-        function split( val ) {
-          return val.split( /\n/ );
-        }
-        function extractLast( term ) {
-          return split( term ).pop();
-        }
-        function complete(jElement){
-            jElement.bind( "keydown", function( event ) {
-            if ( event.keyCode === jQuery.ui.keyCode.TAB && jQuery( this ).data( "ui-autocomplete" ).menu.active ) {
-              event.preventDefault();
-            }}).autocomplete({
-            minLength: 3,
-            source: function( request, response ) { response( jQuery.ui.autocomplete.filter( availableTags, extractLast( request.term ) ) ); },
-            focus: function() { return false; },
-            select: function( event, ui ) { 
-                var terms = split( this.value ); 
-                terms.pop(); 
-                terms.push( ui.item.value );
-                terms.push( "" );
-                this.value = terms.join( "\n" );
-                return false;
-            }
-          });
-        }
-
-        jQuery(document).on("click", jQuery("textarea[name=preconditions_and_assumptions]"), function() {
-            complete(jQuery("textarea[name=preconditions_and_assumptions]"));
-        });
-        jQuery(document).on('keydown',jQuery(".x-shadow").next().find('textarea'),function(){            
-            complete(jQuery(".x-shadow").next().find('textarea'));
-        });
- });
-
-    </script>
   </body>
 </html>
