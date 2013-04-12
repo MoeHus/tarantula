@@ -37,6 +37,7 @@ class ExportController < ApplicationController
   def export_cases cases
     @report = ODFReport::Report.new("#{@template_path}/cases.odt") do |r|
       r.add_section("CASES", cases) do |s|
+        s.add_field(:test_tags){|item| item.tags_to_s }
         s.add_field(:test_title){|item| @i = 0; item.title.to_s }
         s.add_field :test_objective, :objective
         s.add_field :test_preconditions, :preconditions_and_assumptions
