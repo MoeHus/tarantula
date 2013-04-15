@@ -16,15 +16,17 @@ class Sentence < ActiveRecord::Base
   end
 
   def self.strip(str)
-    if str =~ /^(.+):\s*.+$/
-      return $1+':'
-    elsif str =~ /"[^"]*"/
-      return str.gsub(/"[^"]*"/,'""').chomp
-    elsif str =~ /\[[^\[]*\]/
-      return str.gsub(/\[[^\[]*\]/,'""').chomp
-    else
-      return str
+    if str =~ /^(.+:)\s*.+$/
+      str = $1
     end
+    if str =~ /"[^"]*"/
+      str = str.gsub(/"[^"]*"/,'""').chomp
+    end
+    if str =~ /\[[^\[]*\]/
+      str = str.gsub(/\[[^\[]*\]/,'""').chomp
+    end
+
+    return str
   end
 
   def self.keywords 
@@ -36,6 +38,7 @@ class Sentence < ActiveRecord::Base
 
   def self.allowed?(s)
     return true if s =~ /^\s*[#|].+/
+    return true if s =~ /^\s*$/
     false
   end
 
