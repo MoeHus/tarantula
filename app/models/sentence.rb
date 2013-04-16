@@ -43,11 +43,16 @@ class Sentence < ActiveRecord::Base
   end
 
   def self.prepare s
-    s.gsub("[",'"<').gsub("]",'>"').chomp
-    out = s
-    first_word = s.scan(/\s*[^\s]+/).first.gsub(":","")
-    out = "* #{s}" unless Sentence.keywords.values.include?(first_word) or s =~ /^\s*#/
-    out
+    keyword_candidate = ''
+    if s =~ /^([^:]+):/
+      keyword_candidate = $1
+    end
+    s = s.gsub("[",'"<').gsub("]",'>"').chomp
+    if Sentence.allowed?(s) or Sentence.keywords.include?(keyword_candidate)
+      return s
+    else
+      return '* '+s
+    end
   end
 
 end
