@@ -44,11 +44,11 @@ class Sentence < ActiveRecord::Base
 
   def self.prepare s
     keyword_candidate = ''
-    if s =~ /^([^:]+):/
+    if s =~ /^(.+):/
       keyword_candidate = $1
     end
     s = s.gsub("[",'"<').gsub("]",'>"').chomp
-    if Sentence.allowed?(s) or Sentence.keywords.include?(keyword_candidate)
+    if Sentence.allowed?(s) or Sentence.keywords.values.include?(keyword_candidate)
       return s
     else
       return '* '+s
