@@ -86,6 +86,7 @@ skip_filter :set_current_user_and_project
 		raise ApiError.new("Supported languages: #{ApplicationController.cucumber_keywords.keys}", lang.inspect) if lang.nil?
     project_tests = project.cases.select{ |c| c.deleted == false }.collect(&:id)
     execution_tests = project_tests
+    tag_tests = project_tests
     testcase_tests = project_tests
     if attrs['testcase'] != nil
       test = Case.find_by_title(attrs['testcase'], :conditions => { :deleted => false })
@@ -97,7 +98,12 @@ skip_filter :set_current_user_and_project
       raise ApiError.new("Execution not found", attrs['execution']) if execution.nil?
       execution_tests = execution.case_executions.collect(&:case_id)
     end
-    tests = (project_tests & execution_tests) & testcase_tests
+    if attrs['tag'] != nil
+      tag = Tag.find(:all, :conditions => { :name => attrs['tag'], :project_id => @project.id, :taggable_type => 'Case' }).first
+      raise ApiError.new("Tag not found", attrs['tag']) if tag.nil?
+      tag_tests = Case.find_with_tags([tag], { :project => @project }).collect(&:id)
+    end
+    tests = project_tests & execution_tests & tag_tests & testcase_tests
     result = Case.find(tests).collect{|t| { :title => t.title, :body => t.to_feature(lang) } }.to_xml(:skip_types => true, :root => "test")
 		render :xml => result
 	end

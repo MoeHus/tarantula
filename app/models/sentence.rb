@@ -47,7 +47,7 @@ class Sentence < ActiveRecord::Base
     if s =~ /^(.+):/
       keyword_candidate = $1
     end
-    s = s.gsub("[",'"<').gsub("]",'>"').chomp
+    s = s.gsub(/\[\s*/,'"<').gsub(/\s*\]/,'>"').chomp
     if Sentence.allowed?(s) or Sentence.keywords.values.include?(keyword_candidate)
       return s
     else
