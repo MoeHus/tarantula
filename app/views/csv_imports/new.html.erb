@@ -1,10 +1,19 @@
 
 <%= form_tag csv_imports_path, :multipart => true, :id => 'form' do %>
   <br/>
-  <label for="file">File to Import</label>
+  <label for="file">CSV File to Import</label>
   <%= file_field_tag "file" %>
   <br/>
   <%= check_box_tag 'simulate' %> Simulate (just display log, don't update objects)
+  <br/>
+
+  <br/>
+  <label for="tests_template_file">Tests Template to Import</label>
+  <%= file_field_tag "tests_template_file" %>
+  <br/>
+  <br/>
+  <label for="results_template_file">Results Template to Import</label>
+  <%= file_field_tag "results_template_file" %>
   <br/>
   <br/>
 
@@ -14,6 +23,7 @@
      </span>  
    </div>
 
-   <div id="log">
-   </div>
+  <div id="log">
+  </div>
+
 <% end %>
