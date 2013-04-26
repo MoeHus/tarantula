@@ -89,7 +89,7 @@ skip_filter :set_current_user_and_project
     tag_tests = project_tests
     testcase_tests = project_tests
     if attrs['testcase'] != nil
-      test = Case.find_by_title(attrs['testcase'], :conditions => { :deleted => false })
+      test = Case.find_by_title(attrs['testcase'], :conditions => { :deleted => false, :project_id => @project.id })
       raise ApiError.new("Testcase not found", attrs['testcase']) if test.nil?
       testcase_tests = [test.id]
     end
