@@ -399,8 +399,6 @@ Ext.testia.GUI = function() {
         expires: new Date(new Date().getTime()+(1000*60*60*24*60)) // 30 days
         //domain:
     });
-    // update Autocomplete sentences list for this project on first load
-    updateSentences();
 
     // Add events to be listened by other components.
     this.addEvents({
@@ -1585,6 +1583,9 @@ var importCsv = function (){
 }();
 
 // Adding live jquery handlers for autocompletion
+
+    // update Autocomplete sentences list for this project on first load
+    jQuery(document).ready(updateSentences());
 
     jQuery(function() {
         function split( val ) {

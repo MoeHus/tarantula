@@ -14,14 +14,14 @@ class CsvImportsController < ApplicationController
       @log += import.log
     end
     if params[:tests_template_file] != nil
-      f = create_upload_file('tests.odt')
-      f.puts params[:tests_template_file].read
+      f = create_upload_file(ExportController::CASES_TEMPLATE_FN)
+      f.puts params[:tests_template_file].read.force_encoding("utf-8")
       f.close
       @log += '</br><span style="background-color:#77ff77">Tests template file uploaded'
     end
     if params[:results_template_file] != nil
-      f = create_upload_file('results.odt')
-      f.puts params[:results_template_file].read
+      f = create_upload_file(ExportController::RESULTS_TEMPLATE_FN)
+      f.puts params[:results_template_file].read.force_encoding("utf-8")
       f.close
       @log += '</br><span style="background-color:#77ff77">Results template file uploaded'
     end
