@@ -115,7 +115,7 @@ skip_filter :set_current_user_and_project
     project = Project.find_by_name(attrs["project"], :conditions => {:deleted => false})
 		raise ApiError.new("Project not found", attrs["project"]) if project.nil?
 
-		testcase_execution = CaseExecution.find_by_execution_id_and_case_id(project.executions.where(:name => attrs["execution"]).first, project.cases.where(:title => attrs["testcase"]).first)
+		testcase_execution = CaseExecution.find_by_execution_id_and_case_id(project.executions.where(:name => attrs["execution"]).first, project.cases.where(:deleted => false, :title => attrs["testcase"]).first)
 		raise ApiError.new("CaseExecution not found", "testcase => #{attrs["testcase"]}, execution => #{attrs["execution"]}") if testcase_execution.nil?
 
     step_executions = testcase_execution.step_executions.where(:position => attrs["position"].to_i)
@@ -126,21 +126,21 @@ skip_filter :set_current_user_and_project
       :result => ResultType.send(attrs["result"]),
       :comment => attrs['comment']
     })
-		render :xml => { :result => "step number #{attrs["position"]} of #{attrs["testcase"]} updated" }.to_xml
+		render :xml => { :result => "#{attrs["testcase"]}: step# #{attrs["position"]} => #{attrs["result"]}" }.to_xml
   end    
 
-  def update_testcase_duration
+  def update_testcase_results
 		attrs = params["request"]
     raise ApiError.new("Could not parse request as XML. Make sure to specify \'Content-type: text/xml\' when sending request", params.inspect) if attrs.nil?
 
     project = Project.find_by_name(attrs["project"], :conditions => {:deleted => false})
 		raise ApiError.new("Project not found", attrs["project"]) if project.nil?
 
-		testcase_execution = CaseExecution.find_by_execution_id_and_case_id(project.executions.where(:name => attrs["execution"]).first, project.cases.where(:title => attrs["testcase"]).first)
+		testcase_execution = CaseExecution.find_by_execution_id_and_case_id(project.executions.where(:name => attrs["execution"]).first, project.cases.where(:deleted => false, :title => attrs["testcase"]).first)
 		raise ApiError.new("CaseExecution not found", "Test => #{attrs["testcase"]}, Execution => #{attrs["execution"]}") if testcase_execution.nil?
 
-    testcase_execution.update_attributes(:duration => attrs[:duration], :executed_at => Time.now, :executor => @current_user)
-		render :xml => { :result => "testcase duration #{attrs["testcase"]} updated to #{attrs[:duration]}" }.to_xml
+    testcase_execution.update_attributes(:duration => attrs[:duration], :executed_at => Time.now, :executor => @current_user, :result => ResultType.send(attrs["result"]))
+		render :xml => { :result => "#{attrs["testcase"]}: duration => #{attrs[:duration]}, executor => #{@current_user.login}, result => #{attrs["result"]}" }.to_xml
   end    
 
 
