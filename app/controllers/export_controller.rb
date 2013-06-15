@@ -62,7 +62,7 @@ class ExportController < ApplicationController
     raise "#{RESULTS_TEMPLATE_FN} template not found. You can create it from Tools > Import" unless File.exists? "#{@template_path}/#{RESULTS_TEMPLATE_FN}"
     @report = ODFReport::Report.new("#{@template_path}/#{RESULTS_TEMPLATE_FN}") do |r|
       r.add_section("CASES", execution.case_executions) do |s|
-        s.add_field(:test_tags){|item| item.tags_to_s }
+        s.add_field(:test_tags){|item| item.test_case.tags_to_s }
         s.add_field(:test_title){|item| item.test_case.title.to_s}
         s.add_field(:test_objective){|item| item.test_case.objective}
         s.add_field(:test_preconditions){|item| item.test_case.preconditions_and_assumptions}
