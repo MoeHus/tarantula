@@ -94,7 +94,7 @@ class CaseExecutionList < Report::Base
     com_data = ActiveRecord::Base.connection.select_all(
       "SELECT comment, case_execution_id as id FROM step_executions "+
       "WHERE step_executions.case_execution_id IN "+
-      "(#{ce_id_str}) AND comment RLIKE '[:alnum:]+'"
+      "(#{ce_id_str}) AND comment <> ''"
     )
 
     comments = {}
