@@ -39,6 +39,7 @@ namespace :deploy do
 
 	task :symlink_reports_folder, :roles => :app do
 		run "ln -nfs #{deploy_to}/shared/reports/ #{release_path}/public/reports"
+		run "ln -nfs #{deploy_to}/shared/attachment_files/ #{release_path}/attachment_files"
 	end
 
 	task :my, :roles => :app do
