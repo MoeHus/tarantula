@@ -2,7 +2,7 @@ class ApiController < ApplicationController
 skip_filter :set_current_user_and_project
 	before_filter :login_once
   	before_filter do |f|
-    	f.require_permission(['ADMIN'])
+    	f.require_permission(['TEST_DESIGNER'])
   	end
 	respond_to :xml
 
