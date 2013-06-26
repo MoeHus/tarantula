@@ -89,7 +89,7 @@ skip_filter :set_current_user_and_project
     tag_tests = project_tests
     testcase_tests = project_tests
     if attrs['testcase'] != nil
-      test = Case.find_by_title(attrs['testcase'], :conditions => { :deleted => false, :project_id => @project.id })
+      test = Case.find_by_title(attrs['testcase'], :conditions => { :deleted => false, :project_id => project.id })
       raise ApiError.new("Testcase not found", attrs['testcase']) if test.nil?
       testcase_tests = [test.id]
     end
@@ -99,9 +99,9 @@ skip_filter :set_current_user_and_project
       execution_tests = execution.case_executions.collect(&:case_id)
     end
     if attrs['tag'] != nil
-      tag = Tag.find(:all, :conditions => { :name => attrs['tag'], :project_id => @project.id, :taggable_type => 'Case' }).first
+      tag = Tag.find(:all, :conditions => { :name => attrs['tag'], :project_id => project.id, :taggable_type => 'Case' }).first
       raise ApiError.new("Tag not found", attrs['tag']) if tag.nil?
-      tag_tests = Case.find_with_tags([tag], { :project => @project }).collect(&:id)
+      tag_tests = Case.find_with_tags([tag], { :project => project }).collect(&:id)
     end
     tests = project_tests & execution_tests & tag_tests & testcase_tests
     result = Case.find(tests).collect{|t| { :title => t.title, :body => t.to_feature(lang) } }.to_xml(:skip_types => true, :root => "test")
