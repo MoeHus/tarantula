@@ -33,7 +33,7 @@ end
 private
 
   def create_upload_file(name)
-    upload_dir = "#{Rails.public_path}/#{@project.id.to_s}"
+    upload_dir = "#{Rails.public_path}/reports/#{@project.id.to_s}"
     FileUtils.mkdir_p  upload_dir, :verbose =>true unless File.exists? upload_dir
     File.new("#{upload_dir}/#{name}", "w+")
   end

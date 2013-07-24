@@ -3,8 +3,8 @@ class ExportController < ApplicationController
   CASES_TEMPLATE_FN = 'cases.odt'
   RESULTS_TEMPLATE_FN = 'results.odt'
   def export_items
-    @template_path = Rails.public_path + "/#{@project.id}"
-    @report_path = Rails.public_path + "/#{@project.id}/reports"
+    @template_path = Rails.public_path + "/reports/#{@project.id}"
+    @report_path = Rails.public_path + "/reports"
     FileUtils.mkdir_p  @report_path, :verbose =>true unless File.exists? @report_path
     item_type = params[:type]
     id = params[:ids]
@@ -35,7 +35,7 @@ class ExportController < ApplicationController
     rescue
       raise "Problem creating report from #{filename}. Try reloading template."
     end
-    render :json => {:data => {:path => "#{@project.id}/reports/#{filename}"}}
+    render :json => {:data => {:path => "reports/#{filename}"}}
   end
 
   private 
