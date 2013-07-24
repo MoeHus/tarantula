@@ -41,7 +41,7 @@ class ExportController < ApplicationController
   private 
 
   def export_cases cases
-    raise "#{@template_path}/#{CASES_TEMPLATE_FN} template not found. You can create it from Tools > Import" unless File.exists? "#{@template_path}/#{CASES_TEMPLATE_FN}" 
+    raise "#{CASES_TEMPLATE_FN} template not found. You can create it from Tools > Import" unless File.exists? "#{@template_path}/#{CASES_TEMPLATE_FN}" 
     @report = ODFReport::Report.new("#{@template_path}/#{CASES_TEMPLATE_FN}") do |r|
       r.add_section("CASES", cases) do |s|
         s.add_field(:test_tags){|item| item.tags_to_s }
