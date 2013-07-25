@@ -16,7 +16,7 @@ class Sentence < ActiveRecord::Base
   end
 
   def self.strip(str)
-    if str =~ /^(.+:)$/
+    if str =~ /^(.+:)[^"]+$/
       str = $1
     end
     if str =~ /"[^"]*"/
