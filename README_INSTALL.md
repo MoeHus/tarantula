@@ -9,7 +9,7 @@ You can use standard installation instructions from [here](https://github.com/pr
 The differences are:
 - proxy server used (current procedure is for nginx)
 - current procedure is for advanced users
-- after standard installation you'll need to perform following [additional actions](https://getsatisfaction.com/prove/topics/jira_link) to intgrate with oracle hosted jira.   
+- after standard installation you will need to perform following [additional actions](https://getsatisfaction.com/prove/topics/jira_link) to intgrate with oracle hosted jira.   
 
 ## Installation process
 
@@ -22,7 +22,7 @@ The differences are:
 7. Clone source code of the application: `git clone git@github.com:evgeniy-khatko/tarantula.git`  
 8. CD to $APPS/tarantula
 9. Install required ruby gems to run the app:  
-**if you don't plan to integrate Tarantula with oracle hosted jira**  
+**if you do not plan to integrate Tarantula with oracle hosted jira**  
   `bundle install --without development oracle_enabled`   
 **if you plan to integrate Tarantula with oracle hosted jira**  
   install oracle development libraries with [oracle instant client](http://www.oracle.com/technetwork/topics/linuxx86-64soft-092277.html)   
@@ -43,17 +43,17 @@ The differences are:
                                 host: localhost   
                                 encoding: utf8  
                             socket: <%= get_socket.call %>    
-13. run following command to finish tarantula installation (assuming you're in $APPS/tarantula)       
+13. run following command to finish tarantula installation (assuming you are in $APPS/tarantula)       
        `RAILS_ENV=production bundle exec rake tarantula:install => follow instruction`         
 14. run following command to start delayed jobs:         
-        `RAILS_ENV=production bundle exec rake tarantula:jobs:work (assuming you're in $APPS\/tarantula)`         
-15. test your installation trying to start server with following command (assuming you're in $APPS/tarantula)     
+        `RAILS_ENV=production bundle exec rake tarantula:jobs:work (assuming you are in $APPS\/tarantula)`         
+15. test your installation trying to start server with following command (assuming you are in $APPS/tarantula)     
         `RAILS_ENV=production bundle exec rails s`            
 *Proceed to next steps if everything is OK*
 16. install nginx server on your system
 17. install nginx passenger module with following command:     passenger-install-nginx-module
 18. configure nginx to use passenger module with adding following commands to your nginx.conf:  
-                              http {  
+                              http {   
                                   passenger_root /path/to/rvm/.rvm/gems/ruby-1.9.3-p286/gems/passenger-3.0.18;  
                                   passenger_ruby path/to/rvm/.rvm/wrappers/ruby-1.9.3-p286/ruby;  
                                   passenger_default_user your_server_user;  
@@ -73,4 +73,4 @@ The differences are:
 19. navigate to nginx listening port and test your installation
 
 P.S.
-it's recommended to create a capistrano task to automate server code update
+it is recommended to create a capistrano task to automate server code update
