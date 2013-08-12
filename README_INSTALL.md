@@ -30,7 +30,7 @@ The differences are:
 10. Install mysql
 11. Provided you have mysql user with admin privileges => user:secret
 12. add following lines to $APPS/tarantula/config/database.yml:  
-                            <% get_socket = lambda{ ["/opt/local/var/run/mysql5/mysqld.sock",   
+                            `<% get_socket = lambda{ ["/opt/local/var/run/mysql5/mysqld.sock",   
                                                      "/opt/lampp/var/mysql/mysql.sock",  
                                                      "/var/run/mysqld/mysqld.sock",  
                                                      "/var/lib/mysql/mysql.sock"].\  
@@ -42,7 +42,7 @@ The differences are:
                                 password: secret  
                                 host: localhost   
                                 encoding: utf8  
-                            socket: <%= get_socket.call %>    
+                            socket: <%= get_socket.call %>`    
 13. run following command to finish tarantula installation (assuming you are in $APPS/tarantula)       
        `RAILS_ENV=production bundle exec rake tarantula:install => follow instruction`         
 14. run following command to start delayed jobs:         
