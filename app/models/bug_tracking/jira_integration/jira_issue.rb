@@ -1,6 +1,6 @@
   class JiraIssue < ActiveRecord::Base
   UDMargin = 5.minutes # update margin
-  if ImportSource.find_by_name("Jira connection").adapter=~/oracle/
+  if ImportSource.find_by_name("Jira connection") and ImportSource.find_by_name("Jira connection").adapter=~/oracle/
     UPPER = false
   else
     UPPER = true

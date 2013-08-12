@@ -44,7 +44,7 @@ The differences are:
       <space>host: localhost   
       <space>encoding: utf8  
       <space>socket: <%= get_socket.call %>    
-14. run following command to finish tarantula installation (assuming you're in $APPS\/tarantula)
+14. run following command to finish tarantula installation (assuming you're in $APPS/tarantula)
          bundle exec rake tarantula:install => follow instruction
 15. run following command to start delayed jobs: rake tarantula:jobs:work (assuming you're in $APPS\/tarantula)      
 16. test your installation trying to start server with following command:     bundle exec rails s (assuming you're in $APPS\/tarantula)
@@ -73,4 +73,3 @@ The differences are:
 
 P.S.
 it's recommended to create a capistrano task to automate server code update
-
