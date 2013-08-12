@@ -19,7 +19,7 @@ gem 'memcache-client'
 gem 'rb-readline'
 gem 'rubyzip', :require => 'zip/zip'
 gem 'passenger'
-gem 'odf-report', :git => 'https://github.com/sandrods/odf-report'
+#gem 'odf-report', :git => 'https://github.com:sandrods/odf-report.git'
 # Gems needed only for integration with oracle hosted jira
 group :oracle_enabled do
   gem 'activerecord-oracle_enhanced-adapter', '~> 1.4.0'
@@ -31,7 +31,7 @@ group :development do
   gem 'rvm-capistrano'
   gem 'git-up'
   gem 'debugger'
-  gem 'linecache19', :git => 'git://github.com/mark-moseley/linecache'
+  gem 'linecache19', :git => 'https://github.com/mark-moseley/linecache'
   gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
   gem 'ruby-debug19'
   gem 'rack-debug'
