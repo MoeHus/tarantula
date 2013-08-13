@@ -625,6 +625,32 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                     }
                 })
             );
+            this.itemContext.add(
+                new Ext.menu.Item({
+                    text:'Find-Replace',
+                    scope: this,
+                    handler: function(btn, e) {
+                    Ext.Msg.prompt('Find-Replace', "<b>Enter Find-Replace strings on separate lines</b></br>Replacement will be done in following fields:</br>- Objective</br>- Test Data</br>- Preconditions and assumptions</br>- Steps",
+                        function(btn, text){
+                           if (btn == 'ok'){
+                             var ids = this.selectedItems.map(function(i) {return i.dbid;}).join(',');
+                             Ext.Ajax.request({
+                               url: "/cases/find_replace",
+                               method: 'get',
+                               params: { ids: ids, text: text, type: this.taggableType },
+                               scope: this,
+                               success: function(response, request){
+                                 message = Ext.decode(response.responseText).data;
+                                 alert(message);
+                                 this.reload();
+                                 // reload cases panel
+                               }
+                             });
+                           }
+                        }, this, 40);
+                    }
+                })
+            );
             this.itemContext.add(new Ext.menu.Separator());
         }
 
@@ -699,6 +725,32 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                     scope: this,
                     handler: function(c,e) {
                         this.exportItems('Tag');
+                    }
+                })
+            );
+            this.tagContext.add(
+                new Ext.menu.Item({
+                    text:'Find-Replace',
+                    scope: this,
+                    handler: function(btn, e) {
+                    Ext.Msg.prompt('Find-Replace', "<b>Enter Find-Replace strings on separate lines</b></br>Replacement will be done in following fields:</br>- Objective</br>- Test Data</br>- Preconditions and assumptions</br>- Steps",
+                        function(btn, text){
+                           if (btn == 'ok'){
+                             var ids = this.selectedItems.map(function(i) {return i.dbid;}).join(',');
+                             Ext.Ajax.request({
+                               url: "/cases/find_replace",
+                               method: 'get',
+                               params: { ids: ids, text: text, type: 'Tag' },
+                               scope: this,
+                               success: function(response, request){
+                                 message = Ext.decode(response.responseText).data;
+                                 alert(message);
+                                 this.reload();
+                                 // reload cases panel
+                               }
+                             });
+                           }
+                        }, this, 40);
                     }
                 })
             );
@@ -797,6 +849,21 @@ Ext.extend(Ext.ux.ListPanel, Ext.ContentPanel, {
             success: function(response, request){
               path = Ext.decode(response.responseText).data.path;
               window.location = path;
+            }
+        });
+    },
+
+    findReplace: function() {
+        Ext.Ajax.request({
+            url: "/cases/find_replace",
+            method: 'get',
+            params: {ids: ids},
+            scope: this,
+            success: function(response, request){
+              message = Ext.decode(response.responseText).data;
+              Ext.MessageBox.alert('Find-Replace', message, showResult);
+              this.reload();
+              // reload cases panel
             }
         });
     },

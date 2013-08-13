@@ -576,4 +576,20 @@ class Case < ActiveRecord::Base
     end
     true
   end
+
+  def self.find_replace scope, find_what, replace_with
+    message = 'Replace done'
+    begin
+    Case.connection.execute("update cases set preconditions_and_assumptions = replace(preconditions_and_assumptions, \'#{ find_what }\', \'#{ replace_with }\') where id in (#{scope.collect(&:id).join(',')});")
+    Case.where( :id => scope ).each{|c|
+      c.steps.each{ |step| 
+        Step.connection.execute("update steps set action = replace(action, \'#{ find_what }\', \'#{ replace_with }\') where id = #{step.id};")
+        Step.connection.execute("update steps set result = replace(result, \'#{ find_what }\', \'#{ replace_with }\') where id = #{step.id};")
+      }
+    }
+    rescue Exception => e
+      message = e.message
+    end
+    return message
+  end
 end

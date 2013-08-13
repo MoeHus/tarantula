@@ -16,10 +16,9 @@ gem 'therubyracer'
 gem 'delayed_job_active_record'
 gem 'daemons'
 gem 'memcache-client'
-gem 'rb-readline'
 gem 'rubyzip', :require => 'zip/zip'
 gem 'passenger'
-#gem 'odf-report', :git => 'https://github.com:sandrods/odf-report.git'
+gem 'odf-report', :git => 'https://github.com/sandrods/odf-report'
 # Gems needed only for integration with oracle hosted jira
 group :oracle_enabled do
   gem 'activerecord-oracle_enhanced-adapter', '~> 1.4.0'
@@ -35,6 +34,7 @@ group :development do
   gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
   gem 'ruby-debug19'
   gem 'rack-debug'
+  gem 'rb-readline', '~> 0.4.2'
 end
 # Gems used only for assets and not required
 # in production environments by default.

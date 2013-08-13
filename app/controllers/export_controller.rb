@@ -41,7 +41,20 @@ class ExportController < ApplicationController
   private 
 
   def export_cases cases
-    raise "#{CASES_TEMPLATE_FN} template not found. You can import it from Tools > Import (format should be as in https://github.com/sandrods/odf-report)" unless File.exists? "#{@template_path}/#{CASES_TEMPLATE_FN}" 
+    raise "<b>Warning:</b> #{CASES_TEMPLATE_FN} template not found.</br>\
+    You can import it from Tools > Import</br>\
+    format should be as in https://github.com/sandrods/odf-report</br>\
+    Supported variables:</br>\
+    - CASES => section name</br>\
+    - TEST_TAGS</br>\
+    - TEST_TITLE</br>\
+    - TEST_OBJECTIVE</br>\
+    - TEST_PRECONDITIONS</br>\
+    - TEST_DATA</br>\
+    - STEP_INDEX</br>\
+    - STEP_ACTION</br>\
+    - STEP_RESULT"\
+    unless File.exists? "#{@template_path}/#{CASES_TEMPLATE_FN}" 
     @report = ODFReport::Report.new("#{@template_path}/#{CASES_TEMPLATE_FN}") do |r|
       r.add_section("CASES", cases) do |s|
         s.add_field(:test_tags){|item| item.tags_to_s }
@@ -59,7 +72,22 @@ class ExportController < ApplicationController
   end
 
   def export_cases_with_results execution
-    raise "#{RESULTS_TEMPLATE_FN} template not found. You can create it from Tools > Import (format should be as in https://github.com/sandrods/odf-report)" unless File.exists? "#{@template_path}/#{RESULTS_TEMPLATE_FN}"
+    raise "<b>Warning:</b> #{RESULTS_TEMPLATE_FN} template not found.</br>\
+    You can import it from Tools > Import</br>\
+    format should be as in https://github.com/sandrods/odf-report</br>\
+    Supported variables:</br>\
+    - CASES => section name</br>\
+    - TEST_TAGS</br>\
+    - TEST_TITLE</br>\
+    - TEST_OBJECTIVE</br>\
+    - TEST_PRECONDITIONS</br>\
+    - TEST_DATA</br>\
+    - STEP_INDEX</br>\
+    - STEP_ACTION</br>\
+    - STEP_RESULT</br>\
+    - EXECUTION_RESULT</br>\
+    - EXECUTION_COMMENT"\
+    unless File.exists? "#{@template_path}/#{RESULTS_TEMPLATE_FN}"
     @report = ODFReport::Report.new("#{@template_path}/#{RESULTS_TEMPLATE_FN}") do |r|
       r.add_section("CASES", execution.case_executions) do |s|
         s.add_field(:test_tags){|item| item.test_case.tags_to_s }

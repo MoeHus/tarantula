@@ -2,3 +2,4 @@ tmp/*
 config/database.yml
 log/*
 public/at/*.log
+*.log

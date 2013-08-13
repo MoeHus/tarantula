@@ -130,6 +130,24 @@ class CasesController < ApplicationController
     render :json => @case.change_history
   end
 
+  def find_replace
+    id = params[:ids]
+    item_type = params[:type]
+    find_what, replace_with = params[:text].split("\n")
+    message = 'There was a problem during Find-Replace operation'
+
+    case item_type
+    when 'Case'
+      c = Case.find id
+      message = Case.find_replace([c], find_what, replace_with)
+    when 'Tag'
+      tag = Tag.find id
+      cases = Case.find_with_tags([tag], { :project => @project })
+      message = Case.find_replace(cases, find_what, replace_with)
+    end
+    render :json => { :data => message }
+  end
+
   private
 
   def case_test_area_permissions

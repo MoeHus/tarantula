@@ -4,6 +4,7 @@ Tarantula::Application.routes do
   resource :archive, :only => [:destroy, :create],
     :path => '/projects/:project_id/:resources/archive',
     :controller => 'archives'
+  match "/cases/find_replace", :controller => 'cases', :action => 'find_replace', :via => :get
 
   resources :password_resets
 

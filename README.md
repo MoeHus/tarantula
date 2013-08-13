@@ -9,7 +9,9 @@ GNU GPLv3.
 ## This is a fork that is intended to add folloving features to the original tarantula:
 - REST API 
 - integration with Test Automation Tools
-- more versalite jira integration
+- custom ODT exports
+- cucumber integration through Cutara gem
+- more versatile jira integration
 
 *for INSTALL instructions see README\_INSTALL.md*  
 *for REST API see README\_REST\_API.md*  

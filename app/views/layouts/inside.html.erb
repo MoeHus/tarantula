@@ -1616,8 +1616,8 @@ var importCsv = function (){
         jQuery(document).on("click", jQuery("textarea[name=preconditions_and_assumptions]"), function() {
             complete(jQuery("textarea[name=preconditions_and_assumptions]"));
         });
-        jQuery(document).on('keydown',jQuery(".x-shadow").next().find('textarea'),function(){            
-            complete(jQuery(".x-shadow").next().find('textarea'));
+        jQuery(document).on('keydown',jQuery("div.x-shadow").next().find('textarea[name^="ext-comp-"]'),function(){            
+            complete(jQuery("div.x-shadow").next().find('textarea[name^="ext-comp-"]'));
         });
  });
 
