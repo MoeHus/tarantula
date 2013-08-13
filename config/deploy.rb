@@ -37,12 +37,6 @@ namespace :deploy do
 		run "ln -nfs #{deploy_to}/shared/config/database.yml #{release_path}/config/database.yml"
 	end
 
-	desc "Symlinks the Gemfiles"
-	task :symlink_gemfiles, :roles => :app do
-		run "ln -nfs #{deploy_to}/shared/Gemfile #{release_path}/Gemfile"
-		run "ln -nfs #{deploy_to}/shared/Gemfile.lock #{release_path}/Gemfile.lock"
-	end
-
 	task :symlink_reports_folder, :roles => :app do
 		run "ln -nfs #{deploy_to}/shared/reports/ #{release_path}/public"
 		run "ln -nfs #{deploy_to}/shared/attachment_files/ #{release_path}/attachment_files"
