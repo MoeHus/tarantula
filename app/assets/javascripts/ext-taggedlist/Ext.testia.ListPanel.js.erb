@@ -642,8 +642,6 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                                success: function(response, request){
                                  message = Ext.decode(response.responseText).data;
                                  alert(message);
-                                 this.reload();
-                                 // reload cases panel
                                }
                              });
                            }
@@ -745,8 +743,6 @@ Ext.ux.ListPanel = function(el, config, initial_load) {
                                success: function(response, request){
                                  message = Ext.decode(response.responseText).data;
                                  alert(message);
-                                 this.reload();
-                                 // reload cases panel
                                }
                              });
                            }
@@ -849,21 +845,6 @@ Ext.extend(Ext.ux.ListPanel, Ext.ContentPanel, {
             success: function(response, request){
               path = Ext.decode(response.responseText).data.path;
               window.location = path;
-            }
-        });
-    },
-
-    findReplace: function() {
-        Ext.Ajax.request({
-            url: "/cases/find_replace",
-            method: 'get',
-            params: {ids: ids},
-            scope: this,
-            success: function(response, request){
-              message = Ext.decode(response.responseText).data;
-              Ext.MessageBox.alert('Find-Replace', message, showResult);
-              this.reload();
-              // reload cases panel
             }
         });
     },

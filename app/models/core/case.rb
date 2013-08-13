@@ -580,6 +580,8 @@ class Case < ActiveRecord::Base
   def self.find_replace scope, find_what, replace_with
     message = 'Replace done'
     begin
+    Case.connection.execute("update cases set objective = replace(objective, \'#{ find_what }\', \'#{ replace_with }\') where id in (#{scope.collect(&:id).join(',')});")
+    Case.connection.execute("update cases set test_data = replace(test_data, \'#{ find_what }\', \'#{ replace_with }\') where id in (#{scope.collect(&:id).join(',')});")
     Case.connection.execute("update cases set preconditions_and_assumptions = replace(preconditions_and_assumptions, \'#{ find_what }\', \'#{ replace_with }\') where id in (#{scope.collect(&:id).join(',')});")
     Case.where( :id => scope ).each{|c|
       c.steps.each{ |step| 
