@@ -6,6 +6,7 @@ set :domain, "192.168.24.181"
 role :web, domain
 role :app, domain
 role :db, domain, :primary => true
+set :bundle_flags, '--system --quiet --without development test oracle_enabled'
 
 set :user, "user"
 set :deploy_to, "/home/#{user}/#{application}"
