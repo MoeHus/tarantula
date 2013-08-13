@@ -6,14 +6,15 @@ set :domain, "192.168.24.181"
 role :web, domain
 role :app, domain
 role :db, domain, :primary => true
-set :bundle_without, ['development', 'test', 'oracle_enabled']
+set :bundle_without, ['development', 'test']
 
 set :user, "user"
 set :deploy_to, "/home/#{user}/#{application}"
 set :use_sudo, false
 
 default_run_options[:pty] = true
-default_environment['LD_LIBRARY_PATH'] = "#{ENV["ORACLE_HOME"]}lib"
+default_environment['ORACLE_HOME'] = "/usr/lib/oracle/11.2/client64"
+default_environment['LD_LIBRARY_PATH'] = "#{ENV["ORACLE_HOME"]}/lib"
 default_environment['NLS_LANG']='AMERICAN_AMERICA.CL8MSWIN1251'
 
 set :repository, "git@github.com:evgeniy-khatko/tarantula.git"

@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:mark-moseley/linecache.git
+  revision: 869c6a65155068415925067e480741bd0a71527e
+  specs:
+    linecache19 (0.5.12)
+      ruby_core_source (>= 0.1.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -83,8 +90,6 @@ GEM
     json (1.8.0)
     libv8 (3.11.8.17)
     libxml-ruby (2.7.0)
-    linecache19 (0.5.12)
-      ruby_core_source (>= 0.1.4)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -205,6 +210,7 @@ DEPENDENCIES
   jquery-rails
   json
   libxml-ruby
+  linecache19!
   memcache-client
   mysql2
   odf-report

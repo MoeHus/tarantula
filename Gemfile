@@ -30,7 +30,7 @@ group :development do
   gem 'rvm-capistrano'
   gem 'git-up'
   gem 'debugger'
-  # gem 'linecache19', :git => 'https://github.com/mark-moseley/linecache.git'
+  gem 'linecache19', :git => 'git@github.com:mark-moseley/linecache.git'
   gem 'ruby-debug-base19x', '~> 0.11.30.pre4'
   gem 'ruby-debug19'
   gem 'rack-debug'
