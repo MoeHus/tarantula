@@ -18,7 +18,7 @@ gem 'daemons'
 gem 'memcache-client'
 gem 'rubyzip', :require => 'zip/zip'
 gem 'passenger'
-gem 'odf-report'
+gem 'odf-report', :git => 'git@github.com:sandrods/odf-report.git'
 # Gems needed only for integration with oracle hosted jira
 group :oracle_enabled do
   gem 'activerecord-oracle_enhanced-adapter', '~> 1.4.0'
