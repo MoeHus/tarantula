@@ -33,8 +33,8 @@ Tarantula::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = true
-	config.action_dispatch.default_charset = 'cp1251'
-	require "rack/debug"
-	config.middleware.use "Rack::Debug"
+  #config.assets.debug = true
+	#config.action_dispatch.default_charset = 'cp1251'
+	#require "rack/debug"
+	#config.middleware.use "Rack::Debug"
 end

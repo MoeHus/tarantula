@@ -44,10 +44,12 @@ skip_filter :set_current_user_and_project
     raise ApiError.new("Could not parse request as XML. Make sure to specify \'Content-type: text/xml\' when sending request", params.inspect) if attrs.nil?
     project = Project.find_by_name(attrs["project"], :conditions => {:deleted => false})
 		raise ApiError.new("Project not found", attrs["project"]) if project.nil?
+    execution = project.executions.where(:name => attrs["execution"]).first
+		raise ApiError.new("Execution not found", attrs["execution"]) if execution.nil?
 		# following assumptions are made:
 		# validates_uniqueness_of :name, :scope => :project_id (execution.rb)
 		# validates_uniqueness_of :title, :scope => :project_id (case.rb)
-		testcase_execution = CaseExecution.find_by_execution_id_and_case_id(project.executions.where(:name => attrs["execution"]).first, project.cases.where(:title => attrs["testcase"]).first)
+    testcase_execution = CaseExecution.where( :title => attrs[:testcase], :execution_id => execution.id ).first
 		raise ApiError.new("CaseExecution not found", "Test => #{attrs["testcase"]}, Execution => #{attrs["execution"]}") if testcase_execution.nil?
 		step_results = []
 		attrs["step"].each{|se|
