@@ -16,8 +16,7 @@ class Step < ActiveRecord::Base
   validates_presence_of :action
   validates_presence_of :result
   @@sentences = []
-  validate :sentence
-  
+
   def self.sentences= ary
     @@sentences=ary
   end
@@ -70,23 +69,5 @@ class Step < ActiveRecord::Base
     attribute :id,     'Step Id', :identifier => true
     attribute :action, 'Action'
     attribute :result, 'Result'
-  end
-
-  private
-
-  def sentence
-    unless Step.sentences.empty?
-      self.action.split("\n").each{|s|
-        unless (Sentence.allowed? s or Step.sentences.include? Sentence.strip(s))
-          raise "Validation failed: Sentence \'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}"
-        end
-      }
-      self.result.split("\n").each{|s|
-        unless (Sentence.allowed? s or Step.sentences.include? Sentence.strip(s))
-          raise "Validation failed: Sentence \'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}"
-        end
-      }
-      end
-    true
   end
 end
