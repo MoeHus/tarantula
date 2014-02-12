@@ -35,7 +35,7 @@ class ExportController < ApplicationController
     rescue
       raise "Problem creating report from #{filename}. Try reloading template."
     end
-    render :json => {:data => {:path => "reports/#{filename}"}}
+    render :json => {:data => {:path => "reports/#{filename}?#{rand(100)}"}}
   end
 
   private 
