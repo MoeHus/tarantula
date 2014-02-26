@@ -59,6 +59,7 @@ class CasesController < ApplicationController
       render :nothing => true, :status => :created
       return
     end
+
     @data.symbolize_keys!
     steps = @data.delete(:steps).map{|s| s.symbolize_keys}
     tag_list = @data.delete(:tag_list)
@@ -70,6 +71,7 @@ class CasesController < ApplicationController
 
     @case = Case.create_with_steps!(@data, steps, tag_list)
     @case.update_requirements(requirements)
+
     render :json => @case.id, :status => :created
   end
 
@@ -92,12 +94,12 @@ class CasesController < ApplicationController
   #   Saves changes to the case.
   #
   def update
-    @case.disable_validation = @data.delete('disable_validation')
     if params[:data]
       # Incoming data in json encoded format.
       @data.symbolize_keys!
       @data[:project_id] ||= @project.id
       @data[:updated_by] = @current_user.id
+
       steps = @data.delete(:steps)
       tag_list = @data.delete(:tag_list)
       ce = @data.delete(:update_case_execution)

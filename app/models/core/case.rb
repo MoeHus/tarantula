@@ -13,7 +13,6 @@ class Case < ActiveRecord::Base
   extend CsvExchange::Model
 
   alias_attribute :name, :title
-  attr_accessor :disable_validation
 
   scope :active, where(:deleted => 0, :archived => 0)
   scope :deleted, where(:deleted => 1)
@@ -44,7 +43,7 @@ class Case < ActiveRecord::Base
 
   validates_presence_of :title, :project_id, :date
   validates_uniqueness_of :external_id, :scope => :project_id, :allow_nil => true
-  validate :autocomplete, if: Proc.new{ |c| !c.disable_validation }
+  validate :sentence
 
   validate :copy_attachments_from_original
 
@@ -565,28 +564,14 @@ class Case < ActiveRecord::Base
   end
   private
 
-  def autocomplete  
+  def sentence  
     Step.sentences = self.project.sentences.collect(&:value)
     unless Step.sentences.empty?
       self.preconditions_and_assumptions.split("\n").each{|s|
         unless (Sentence.allowed? s or Step.sentences.include? Sentence.strip(s))
-          errors.add(:case, "\'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
+          errors.add(:sentence, "\'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
           return false
         end
-      }
-      self.steps.each{|step|
-        step.action.split("\n").each{|s|
-          unless (Sentence.allowed? s or Step.sentences.include? Sentence.strip(s))
-            errors.add(:step, "\'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
-            return false
-          end
-        }
-        step.result.split("\n").each{|s|
-          unless (Sentence.allowed? s or Step.sentences.include? Sentence.strip(s))
-            errors.add(:step, "\'#{Sentence.strip s}\' (#{s}) - Unknown</br>Known:</br>#{Step.sentences.join("</br>")}")
-            return false
-          end
-        }
       }
     end
     true

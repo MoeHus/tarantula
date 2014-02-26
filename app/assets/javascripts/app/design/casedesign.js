@@ -156,21 +156,14 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
             new Ext.form.TextField({
                 fieldLabel: 'Change comment',
                 name: 'change_comment',
-                //isValid: function() {
-                //    if ( (content.appForm.mode != 'new') &&
-                //         Ext.isEmpty(this.getValue())) {
-                //        return false;
-                //    }
-                //    return true;
-                //},
+                isValid: function() {
+                    if ( (content.appForm.mode != 'new') &&
+                         Ext.isEmpty(this.getValue())) {
+                        return false;
+                    }
+                    return true;
+                },
                 invalidText: "Enter change comment."
-            }),
-
-            new Ext.form.Checkbox({
-                fieldLabel: 'Disable validation',
-                name: 'disable_validation',
-                width: 10,
-                checked: true
             })
         ];
         if (!GUI.tagsStore.getById(GUI.tagFilterCombo.getValue()).get('forced')) {
@@ -211,7 +204,6 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
         this.appForm.registerField( 'test_data');
         this.appForm.registerField( 'preconditions_and_assumptions');
         this.appForm.registerField( 'tag_list');
-        this.appForm.registerField( 'disable_validation');
         if (cblist) {
             this.appForm.registerField(cblist, 'test_area_ids');
         }
